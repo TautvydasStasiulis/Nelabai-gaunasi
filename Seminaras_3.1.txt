@@ -1,0 +1,33 @@
+setwd("C:/Users/studentas/Desktop/Nelabai-gaunasi-master/Nelabai-gaunasi-master")
+dir()
+
+install.packages("readr")
+data<-read.csv("data-table.csv",
+               sep = ",",
+               header = T,
+               stringsAsFactors = F,
+               encoding = "UTF-8")
+#-----------------------------------
+df<-data[data$Lytis=="Vyrai ir moterys" & data$Gyvenamoji.vietove=="Miestas ir kaimas", ]
+#-----------------------------------
+aggregate(df$Reiksme, list(df$Amzius..tikslines.amziaus.grupes.), mean)
+#-----------------------------------
+df<-data[data$Lytis=="Vyrai ir moterys" & data$Gyvenamoji.vietove=="Miestas ir kaimas" & data$Amzius..tikslines.amziaus.grupes.%in% c("15–24","15–74"), ]
+#-----------------------------------
+png("nedarbo_lygio_stat.png",width = 1280, height = 800, units = "px", pointsize = 12,
+    bg = "lavender")
+plot(df[df[,3]=="15–24",1],
+     df[df[,3]=="15–24",7],
+     type="l",
+     col="red",
+     xlab="Metai",
+     ylab="Nedarbas %",
+     ylim = c(0,40),
+     lwd=2.5,
+)
+lines(df[df[,3]=="15–74",1],
+      df[df[,3]=="15–74",7],
+      col="blue",
+      lwd=2.5)
+dev.off()
+#----------------------------------
